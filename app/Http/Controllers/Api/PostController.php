@@ -14,6 +14,7 @@ class PostController extends Controller
 
         // salvo in una variabile tutti i miei post
         $posts = Post::all();
+            //->load('tags');
 
         // il return adesso non mi restituirà piu una view(blade) ma un json
         // posso passsare la variabile posts con il compact
