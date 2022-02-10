@@ -2,36 +2,43 @@
   <main class="container">
     <h1>I miei Post</h1>
 
-    <PostItem 
-      v-for="post in posts"
-      :key="post.id"
-      :post="post"
-    />
+    
+    
+    <div v-if="posts">
+      <PostItem 
+        v-for="post in posts"
+        :key="post.id"
+        :post="post"
+      />
 
-    <div class="navigation">
-      <button
-        @click="getPosts(pagination.current - 1)"
-        :disabled="pagination.current === 1"
-        > 
-        << prev
-        </button>
+      <div class="navigation">
+        <button
+          @click="getPosts(pagination.current - 1)"
+          :disabled="pagination.current === 1"
+          > 
+          << prev
+          </button>
+
+          <button
+            v-for="i in pagination.last"
+            :key="i"
+            @click="getPosts(i)"
+            :disabled="pagination.current === i"
+          >
+            {{ i }}
+          </button>
 
         <button
-          v-for="i in pagination.last"
-          :key="i"
-          @click="getPosts(i)"
-        >
-          {{ i }}
+          @click="getPosts(pagination.current + 1)"
+          :disabled="pagination.current === pagination.last"
+        > 
+          >> next
         </button>
-
-      <button
-        @click="getPosts(pagination.current + 1)"
-        :disabled="pagination.current === pagination.last"
-
-      > 
-        >> next
-
-      </button>
+      </div>
+    </div>
+    
+    <div v-else class="loader">
+      <h3>Loading...</h3>
     </div>
 
   </main>
@@ -50,10 +57,11 @@ export default {
     return{
       apiUrl: 'http://127.0.0.1:8000/api/posts?page=',
 
-      // una volta effettuata la chiamata salvo tutti i miei dati in posts
+      // una volta effettuata la chiamata salvo tutti i miei dati in posts, di defaul è null ma una volta effettuata la chiamata si riempe
       posts: null,
 
       pagination: {}
+      
 
     }
   },
@@ -68,11 +76,13 @@ export default {
   methods: {
     // creo una funzione che fa la chiamata axios
     getPosts(page = 1){
+      // creo il loader anche quando cambio pagina
+      this.posts = null;
       axios.get(this.apiUrl + page)
       .then(result => {
         this.posts = result.data.data
         //console.log('ARRAY--->', this.posts);
-
+      
         this.pagination = {
           current : result.data.current_page,
           last : result.data.last_page
@@ -80,6 +90,7 @@ export default {
         }
           console.log('ARRAY CON PAGINATE--->', this.pagination);
       })
+
     }
   }
 
@@ -98,6 +109,11 @@ main{
       padding: 5px;
       cursor: pointer;
     }
+  }
+
+  .loader{
+    text-align: center;
+    padding-top: 150px;
   }
 }
 

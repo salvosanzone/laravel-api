@@ -1956,6 +1956,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'PostItem',
   props: {
@@ -1965,6 +1980,10 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     troncateText: function troncateText() {
       return this.post.content.substr(0, 50) + '...';
+    },
+    formaDate: function formaDate() {
+      var d = new Date(this.post.created_at);
+      var day = d.getDay();
     }
   }
 });
@@ -2020,6 +2039,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Posts',
@@ -2029,7 +2055,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       apiUrl: 'http://127.0.0.1:8000/api/posts?page=',
-      // una volta effettuata la chiamata salvo tutti i miei dati in posts
+      // una volta effettuata la chiamata salvo tutti i miei dati in posts, di defaul è null ma una volta effettuata la chiamata si riempe
       posts: null,
       pagination: {}
     };
@@ -2045,6 +2071,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      // creo il loader anche quando cambio pagina
+      this.posts = null;
       axios.get(this.apiUrl + page).then(function (result) {
         _this.posts = result.data.data; //console.log('ARRAY--->', this.posts);
 
@@ -2126,7 +2154,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "article[data-v-3d1b2bbe] {\n  border: 2px solid black;\n  padding: 10px;\n  text-align: center;\n  margin-bottom: 20px;\n}\narticle .text[data-v-3d1b2bbe] {\n  margin-bottom: 20px;\n}", ""]);
+exports.push([module.i, "article[data-v-3d1b2bbe] {\n  border: 2px solid black;\n  padding: 10px;\n  text-align: center;\n  margin-bottom: 20px;\n}\narticle p[data-v-3d1b2bbe] {\n  margin: 5px 0;\n}\narticle .category[data-v-3d1b2bbe] {\n  -webkit-text-decoration-line: underline;\n          text-decoration-line: underline;\n}\narticle .tag[data-v-3d1b2bbe] {\n  background-color: brown;\n  color: white;\n  border-radius: 5px;\n  padding: 0 5px;\n}", ""]);
 
 // exports
 
@@ -2145,7 +2173,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "main[data-v-4ac4d2f8] {\n  padding: 50px;\n}\nmain h1[data-v-4ac4d2f8] {\n  margin-bottom: 10px;\n}\nmain .navigation[data-v-4ac4d2f8] {\n  margin-bottom: 100px;\n}\nmain .navigation button[data-v-4ac4d2f8] {\n  padding: 5px;\n  cursor: pointer;\n}", ""]);
+exports.push([module.i, "main[data-v-4ac4d2f8] {\n  padding: 50px;\n}\nmain h1[data-v-4ac4d2f8] {\n  margin-bottom: 10px;\n}\nmain .navigation[data-v-4ac4d2f8] {\n  margin-bottom: 100px;\n}\nmain .navigation button[data-v-4ac4d2f8] {\n  padding: 5px;\n  cursor: pointer;\n}\nmain .loader[data-v-4ac4d2f8] {\n  text-align: center;\n  padding-top: 150px;\n}", ""]);
 
 // exports
 
@@ -3424,7 +3452,27 @@ var render = function () {
       _c("p", { staticClass: "date" }, [_vm._v(_vm._s(_vm.post.created_at))]),
       _vm._v(" "),
       _c("p", { staticClass: "text" }, [_vm._v(_vm._s(_vm.troncateText))]),
+      _vm._v(" "),
+      _vm.post.category
+        ? _c("p", { staticClass: "text category" }, [
+            _vm._v(_vm._s(_vm.post.category.name)),
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        _vm._l(_vm.post.tags, function (tag) {
+          return _vm.post.tags
+            ? _c("span", { key: tag.id, staticClass: "tag" }, [
+                _vm._v("\n        " + _vm._s(tag.name) + "\n      "),
+              ])
+            : _vm._e()
+        }),
+        0
+      ),
     ]),
+    _vm._v(" "),
+    _c("div"),
   ])
 }
 var staticRenderFns = []
@@ -3449,68 +3497,74 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "main",
-    { staticClass: "container" },
-    [
-      _c("h1", [_vm._v("I miei Post")]),
-      _vm._v(" "),
-      _vm._l(_vm.posts, function (post) {
-        return _c("PostItem", { key: post.id, attrs: { post: post } })
-      }),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "navigation" },
-        [
-          _c(
-            "button",
-            {
-              attrs: { disabled: _vm.pagination.current === 1 },
-              on: {
-                click: function ($event) {
-                  return _vm.getPosts(_vm.pagination.current - 1)
-                },
-              },
-            },
-            [_vm._v(" \n      << prev\n      ")]
-          ),
-          _vm._v(" "),
-          _vm._l(_vm.pagination.last, function (i) {
-            return _c(
-              "button",
-              {
-                key: i,
-                on: {
-                  click: function ($event) {
-                    return _vm.getPosts(i)
+  return _c("main", { staticClass: "container" }, [
+    _c("h1", [_vm._v("I miei Post")]),
+    _vm._v(" "),
+    _vm.posts
+      ? _c(
+          "div",
+          [
+            _vm._l(_vm.posts, function (post) {
+              return _c("PostItem", { key: post.id, attrs: { post: post } })
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "navigation" },
+              [
+                _c(
+                  "button",
+                  {
+                    attrs: { disabled: _vm.pagination.current === 1 },
+                    on: {
+                      click: function ($event) {
+                        return _vm.getPosts(_vm.pagination.current - 1)
+                      },
+                    },
                   },
-                },
-              },
-              [_vm._v("\n        " + _vm._s(i) + "\n      ")]
-            )
-          }),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              attrs: {
-                disabled: _vm.pagination.current === _vm.pagination.last,
-              },
-              on: {
-                click: function ($event) {
-                  return _vm.getPosts(_vm.pagination.current + 1)
-                },
-              },
-            },
-            [_vm._v(" \n      >> next\n\n    ")]
-          ),
-        ],
-        2
-      ),
-    ],
-    2
-  )
+                  [_vm._v(" \n        << prev\n        ")]
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.pagination.last, function (i) {
+                  return _c(
+                    "button",
+                    {
+                      key: i,
+                      attrs: { disabled: _vm.pagination.current === i },
+                      on: {
+                        click: function ($event) {
+                          return _vm.getPosts(i)
+                        },
+                      },
+                    },
+                    [_vm._v("\n          " + _vm._s(i) + "\n        ")]
+                  )
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    attrs: {
+                      disabled: _vm.pagination.current === _vm.pagination.last,
+                    },
+                    on: {
+                      click: function ($event) {
+                        return _vm.getPosts(_vm.pagination.current + 1)
+                      },
+                    },
+                  },
+                  [_vm._v(" \n        >> next\n      ")]
+                ),
+              ],
+              2
+            ),
+          ],
+          2
+        )
+      : _c("div", { staticClass: "loader" }, [
+          _c("h3", [_vm._v("Loading...")]),
+        ]),
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

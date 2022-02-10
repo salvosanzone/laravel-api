@@ -4,7 +4,22 @@
       <h3>{{ post.title }}</h3>
       <p class="date">{{ post.created_at }}</p>
       <p class="text">{{ troncateText }}</p>
+      <p v-if="post.category" class="text category">{{ post.category.name }}</p>
+      <div>
+        <span
+          class="tag"
+          v-if="post.tags"
+          v-for="tag in post.tags"
+          :key="tag.id"
+        >
+          {{ tag.name }}
+        </span>
+      </div>
     </article>
+    <div>
+
+
+    </div>
   </div>
 </template>
 
@@ -20,6 +35,11 @@ export default {
   computed: {
     troncateText(){
       return this.post.content.substr(0, 50) + '...';
+    },
+
+    formaDate(){
+      const d = new Date(this.post.created_at);
+      let day = d.getDay()
     }
   }
 }
@@ -31,8 +51,18 @@ article{
   padding: 10px;
   text-align: center;
   margin-bottom: 20px;
-  .text{
-    margin-bottom: 20px;
+  p{
+    margin: 5px 0;
+  }
+  .category{
+    text-decoration-line: underline;
+
+  }
+  .tag{
+    background-color: brown;
+    color: white;
+    border-radius: 5px;
+    padding: 0 5px;
   }
 }
 </style>
