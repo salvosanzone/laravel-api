@@ -19,4 +19,11 @@ class PostController extends Controller
         // posso passsare la variabile posts con il compact
         return response()->json($posts);
     }
+
+    // generazione json del singolo post in dettaglio usando lo slug
+    public function show($slug){
+      $post = Post::where('slug', $slug)->with(['tags', 'category'])->first();
+      return response()->json($post);
+    }
+    
 }

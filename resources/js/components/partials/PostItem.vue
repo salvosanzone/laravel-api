@@ -1,7 +1,12 @@
 <template>
   <div>
     <article>
-      <h3>{{ post.title }}</h3>
+      
+      <h3>
+        <router-link :to="{name: 'detail', params:{slug: post.slug}}">
+          {{ post.title }}
+         </router-link>
+      </h3>
       <p class="date">{{ post.created_at }}</p>
       <p class="text">{{ troncateText }}</p>
       <p v-if="post.category" class="text category">{{ post.category.name }}</p>
@@ -51,6 +56,10 @@ article{
   padding: 10px;
   text-align: center;
   margin-bottom: 20px;
+  h3:hover{
+    cursor: pointer;
+    text-decoration: underline;
+  }
   p{
     margin: 5px 0;
   }

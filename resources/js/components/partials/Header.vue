@@ -3,12 +3,18 @@
   <header>
     <nav>
       <ul>
-      <li>
-        <a href="">Home</a> 
-        <a class="active" href="">Blog</a> 
-        <a href="">Chi siamo</a> 
-        <a href="">Contatti</a>
-      </li>
+        <li>
+          <router-link :to="{name: 'home'}">Home</router-link>
+        </li>
+        <li>
+          <router-link :to="{name: 'blog'}">Blog</router-link>
+        </li>
+        <li>
+          <router-link :to="{name: 'about'}">Chi siamo</router-link>
+        </li>
+        <li>
+          <router-link :to="{name: 'contacts'}">Contatti</router-link>
+        </li>
     </ul>
     </nav>
     
@@ -31,6 +37,7 @@ header{
   ul{
     list-style: none;
     li{
+      display: inline-block;
       a{
         margin: 0 10px;
          text-decoration: none;

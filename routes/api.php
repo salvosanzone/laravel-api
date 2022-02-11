@@ -15,4 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 // collego la rotta col controller
-Route::get('posts', 'Api\PostController@index');
+//Route::get('posts', 'Api\PostController@index');
+
+
+// le raggruppo tutte
+Route::namespace('Api')
+  ->prefix('posts')
+  ->group(function(){
+    Route::get('/', 'PostController@index');
+    Route::get('{slug}', 'PostController@show');
+  });
