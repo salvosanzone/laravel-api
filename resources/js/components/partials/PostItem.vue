@@ -3,7 +3,7 @@
     <article>
       
       <h3>
-        <router-link :to="{name: 'detail', params:{slug: post.slug}}">
+        <router-link class="link" :to="{name: 'detail', params:{slug: post.slug}}">
           {{ post.title }}
          </router-link>
       </h3>
@@ -72,6 +72,10 @@ article{
     color: white;
     border-radius: 5px;
     padding: 0 5px;
+  }
+  .link{
+    color: black;
+    text-decoration: none;
   }
 }
 </style>
